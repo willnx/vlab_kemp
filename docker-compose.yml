@@ -1,0 +1,31 @@
+version: '3'
+services:
+  kemp-api:
+    ports:
+      - "5000:5000"
+    image:
+      willnx/vlab-kemp-api
+    environment:
+      - VLAB_URL=https://localhost
+      - INF_VCENTER_SERVER=virtlab.local
+      - INF_VCENTER_USER=Administrator@vsphere.local
+      - INF_VCENTER_PASSWORD=ChangeMe
+    volumes:
+      - ./vlab_kemp_api:/usr/lib/python3.6/site-packages/vlab_kemp_api
+    command: ["python3", "app.py"]
+
+  kemp-worker:
+    image:
+      willnx/vlab-kemp-worker
+    volumes:
+      - ./vlab_kemp_api:/usr/lib/python3.6/site-packages/vlab_kemp_api
+      - /mnt/raid/images/kemp:/images:ro
+    environment:
+      - INF_VCENTER_SERVER=virtlab.local
+      - INF_VCENTER_USER=Administrator@vsphere.local
+      - INF_VCENTER_PASSWORD=ChangeMe
+      - INF_VCENTER_TOP_LVL_DIR=/vlab
+
+  kemp-broker:
+    image:
+      rabbitmq:3.7-alpine
