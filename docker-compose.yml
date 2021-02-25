@@ -11,14 +11,14 @@ services:
       - INF_VCENTER_USER=Administrator@vsphere.local
       - INF_VCENTER_PASSWORD=ChangeMe
     volumes:
-      - ./vlab_kemp_api:/usr/lib/python3.6/site-packages/vlab_kemp_api
+      - ./vlab_kemp_api:/usr/lib/python3.8/site-packages/vlab_kemp_api
     command: ["python3", "app.py"]
 
   kemp-worker:
     image:
       willnx/vlab-kemp-worker
     volumes:
-      - ./vlab_kemp_api:/usr/lib/python3.6/site-packages/vlab_kemp_api
+      - ./vlab_kemp_api:/usr/lib/python3.8/site-packages/vlab_kemp_api
       - /mnt/raid/images/kemp:/images:ro
     environment:
       - INF_VCENTER_SERVER=virtlab.local
